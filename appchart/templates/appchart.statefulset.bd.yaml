@@ -1,0 +1,39 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    group: db
+  name: {{ .Release.Name | lower }}-db
+spec:
+  replicas: {{ .Values.db.replicas-app | default "1" }}
+  selector:
+    matchLabels:
+      group: db
+  template:
+    metadata:
+      labels:
+        group: db
+    spec:
+      containers:
+      {{- with .Values.db }}
+      - name: {{ $.Release.Name | lower }}-db       
+        image: postgres:{{ version-app }}
+        ports:
+          - name: db-port
+            containerPort: {{ listening-port | default "5432" }}
+        envFrom:
+          - secretRef:
+              name: postgres-secret
+        volumeMounts:
+          - name: {{ pvc-db-storage-name | default "db-data-storage" }}
+            mountPath: /db
+      volumeClaimTemplates:
+      - metadata:
+          name: {{ pvc-db-storage-name | default "db-data-storage" }}
+        spec:
+          accessModes: {{ pvc-db-storage-accessmodes | default "ReadWriteOnce" }}
+          resources:
+            requests:
+              storage: {{ pvc-db-storage-space | default "10Gi" }}
+      {{- end }}

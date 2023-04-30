@@ -1,0 +1,5 @@
+orgAllowlist: <git>
+github:
+  user: <user>
+  token: <token>
+  secret: <secret>

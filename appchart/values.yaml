@@ -1,0 +1,21 @@
+appchart:
+  image-name: "zmaalz/reg-forms-app"
+  version-app: 0.1.0 # Версия приложения 
+  replicas-app: 3 # Количество реплик
+  listening-port: "80" # Порт web сервера (по умолчанию используется 80)
+  pvc-app-storage-name: "app-data-storage" # Имя PVC сервера приложений
+  pvc-app-storage-class: "csi-rbd-sc" # Класс хранилища 
+  pvc-app-storage-accessmodes: "ReadOnlyMany"
+  pvc-app-storage-space: "10" # (по умолчанию используется 10Gi)
+appservice:
+  listening-port: "80" # (по умолчанию используется 80)
+db:
+  version-app: "13-alpine" # Версия приложения 
+  replicas-app: 1 # Количество реплик
+  listening-port: "5432" # Порт PostgreSQL (по умолчанию используется 5432)
+  pvc-db-storage-name: "db-data-storage" # Имя PVC сервера приложений
+  pvc-db-storage-class: "csi-rbd-sc" # Класс хранилища 
+  pvc-db-storage-accessmodes: "ReadWriteOnce"
+  pvc-db-storage-space: "10" # (по умолчанию используется 10Gi)
+  pg-pass: "postgres"
+  pg-user: "postgres"

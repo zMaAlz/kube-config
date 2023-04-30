@@ -1,0 +1,12 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ .Values.appchart.pvc-data-storage-name | lower }}
+spec:
+  accessModes:
+    - ReadOnlyMany
+  storageClassName: {{ .Values.appchart.pvc-storage-class | lower }}
+  resources:
+    requests:
+      storage: {{ .Values.appchart.storage-space | default "10Gi" }}
+      
