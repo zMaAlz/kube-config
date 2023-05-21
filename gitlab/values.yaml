@@ -1,0 +1,11 @@
+global:
+  edition: ee
+  hosts:
+    domain: <domain>
+nginx-ingress:
+  controller:
+    replicaCount: 1
+certmanager-issuer:
+  email: <email>
+prometheus:
+  install: false

@@ -1,5 +1,9 @@
-orgAllowlist: <git>
+orgAllowlist: <repo>
 github:
   user: <user>
   token: <token>
   secret: <secret>
+service:
+  type: ClusterIP
+loadEnvFromSecrets:
+  - yc-secret
