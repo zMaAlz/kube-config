@@ -1,2 +1,2 @@
 #!/bin/bash
-helm install ingress-nginx ingress-nginx/ingress-nginx
+helm install ingress-nginx -f values.yaml ingress-nginx/ingress-nginx
