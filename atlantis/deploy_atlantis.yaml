@@ -1,0 +1,83 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: atlantis
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: "atlantis.familym.ru"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: atlantis
+            port:
+              number: 4141
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: atlantis
+spec:
+  ports:
+  - name: atlantis
+    port: 4141
+    targetPort: 4141
+  selector:
+    app: atlantis
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: atlantis
+  labels:
+    app: atlantis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: atlantis
+  template:
+    metadata:
+      labels:
+        app: atlantis
+    spec:
+      containers:
+      - name: atlantis
+        image: ghcr.io/runatlantis/atlantis:latest
+        env:
+        - name: ATLANTIS_REPO_ALLOWLIST
+          value: github.com/<repo>
+        - name: ATLANTIS_GH_USER
+          value: <login>
+        - name: ATLANTIS_GH_TOKEN
+          value: <token>
+        - name: ATLANTIS_GH_WEBHOOK_SECRET
+          value: <secret>
+        - name: ATLANTIS_PORT
+          value: "4141" 
+        ports:
+        - name: atlantis
+          containerPort: 4141
+        resources:
+          requests:
+            memory: 256Mi
+            cpu: 100m
+          limits:
+            memory: 256Mi
+            cpu: 100m
+        livenessProbe:
+          periodSeconds: 120
+          httpGet:
+            path: /healthz
+            port: 4141
+            scheme: HTTP
+        readinessProbe:
+          periodSeconds: 120
+          httpGet:
+            path: /healthz
+            port: 4141
+            scheme: HTTP

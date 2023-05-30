@@ -7,6 +7,7 @@
 * Prometheus
 * atlantis
 * GitLab
+* multitool (для тестирования)
 
 
 Требуется

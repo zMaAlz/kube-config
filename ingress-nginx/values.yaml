@@ -1,5 +1,4 @@
 controller:
   kind: DaemonSet
-  nodeSelector:
-    kubernetes.io/role: ingress
+  # nodeSelector: "[role=ingress]"
   
